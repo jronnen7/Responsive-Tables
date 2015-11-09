@@ -34,21 +34,23 @@ ResponsiveTable.prototype.InitTableRows = function () {
 ResponsiveTable.prototype.Respond = function () {
 	
 	for(var i=0;i<this.tableRows.length;i++) {
-		while(true) {
-			if(this.ShouldShrink()) {
-				this.RemoveLeastImportantColumn();
-			} else if (this.ShouldExpand()) {
-				this.AddMostImportantColumn(i);
-			} else { 
-				break; 
+		if(!this.IsGeneratedRow(i)) {
+			while(true) {
+				if(this.ShouldShrink(i)) {
+					this.RemoveLeastImportantColumn(i);
+				} else if (this.ShouldExpand()) {
+					this.AddMostImportantColumn(i);
+				} else { 
+					break; 
+				}
 			}
 		}
 	}
 }
 
-ResponsiveTable.prototype.ShouldShrink = function () {
+ResponsiveTable.prototype.ShouldShrink = function (i) {
 	/* TODO */
-	return this.CountColumns()>3;
+	return this.CountColumns(i)>3;
 }
 
 ResponsiveTable.prototype.ShouldExpand = function () {
@@ -64,10 +66,10 @@ ResponsiveTable.prototype.GetNumberOfColumns = function () {
 }
 
 ResponsiveTable.prototype.CountColumns = function (i) {
-	return this.tableRows[0].getElementsByTagName('td').length;
+	return this.tableRows[i].getElementsByTagName('td').length;
 }
 
-ResponsiveTable.prototype.RemoveLeastImportantColumn = function () {
+ResponsiveTable.prototype.RemoveLeastImportantColumn = function (i) {
 	var column = this.GetLeastImportantColumn(i);
 	this.RemoveFromDisplay(column, i);
 	if(!this.IsGeneratedColumnNext(i)) {
@@ -76,7 +78,7 @@ ResponsiveTable.prototype.RemoveLeastImportantColumn = function () {
 	this.InsertBelow(column, i);
 }
 
-ResponsiveTable.prototype.AddMostImportantColumn = function () {
+ResponsiveTable.prototype.AddMostImportantColumn = function (i) {
 
 }
 
