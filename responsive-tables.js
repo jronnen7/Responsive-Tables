@@ -32,16 +32,13 @@ ResponsiveTable.prototype.InitTableRows = function () {
 }
 
 ResponsiveTable.prototype.Respond = function () {
-	
-	for(var i=0;i<this.tableRows.length;i++) {
-		while(true) {
-			if(this.ShouldShrink()) {
-				this.RemoveLeastImportantColumn();
-			} else if (this.ShouldExpand()) {
-				this.AddMostImportantColumn(i);
-			} else { 
-				break; 
-			}
+	while(true) {
+		if(this.ShouldShrink()) {
+			this.RemoveLeastImportantColumn();
+		} else if (this.ShouldExpand()) {
+			this.AddMostImportantColumn(i);
+		} else { 
+			break; 
 		}
 	}
 }
@@ -68,12 +65,17 @@ ResponsiveTable.prototype.CountColumns = function (i) {
 }
 
 ResponsiveTable.prototype.RemoveLeastImportantColumn = function () {
-	var column = this.GetLeastImportantColumn(i);
-	this.RemoveFromDisplay(column, i);
-	if(!this.IsGeneratedColumnNext(i)) {
-		this.GenerateRow(i);
-	} 
-	this.InsertBelow(column, i);
+	/* TODO get table head // remove and store to variable */	
+	for(var i=1;i<this.tableRows[i].length;i++) {
+		if(!this.IsGeneratedRow()) {
+			var column = this.GetLeastImportantColumn(i);
+			this.RemoveFromDisplay(column, i);
+			if(!this.IsGeneratedColumnNext(i)) {
+				this.GenerateRow(i);
+			} 
+			this.InsertBelow(column, i);
+		}
+	}
 }
 
 ResponsiveTable.prototype.AddMostImportantColumn = function () {
