@@ -59,14 +59,12 @@ ResponsiveTable.prototype.CountColumns = function () {
 }
 
 ResponsiveTable.prototype.RemoveLeastImportantColumn = function () {
-	/* TODO get table head // remove and store to variable */	
-	
-
 	var columnNum = this.GetLeastImportantColumn();
-	var removed = this.RemoveFromDisplay(columnNum);
-	this.InsertBelow(removed);
-
-
+	if(columnNum > -1) {
+		this.currentPosistion = columnNum;
+		var removed = this.RemoveFromDisplay(columnNum);
+		this.InsertBelow(removed);
+	}
 }
 
 ResponsiveTable.prototype.AddMostImportantColumn = function () {
@@ -92,7 +90,7 @@ ResponsiveTable.prototype.GetMostImportantColumn = function () {
 ResponsiveTable.prototype.GetLeastImportantColumn = function () {
 	var ret = null; var priority = 0;
 	var row = this.tableRows[0];
-	var leastImpt = 0;
+	var leastImpt = -1;
 	for(var j=0;j<row.children.length;j++) {
 		var temp = Number(row.children[j].getAttribute("data-priority"));
 		if(temp!==undefined && temp!=null && temp > priority) {
@@ -123,6 +121,7 @@ ResponsiveTable.prototype.InsertBelow = function (removed) {
 			}
 			var elmToAdd = document.createElement('p');
 			elmToAdd.setAttribute("data-priority", this.currentPriority);
+			elmToAdd.setAttribute("data-position", this.currentPosistion);
 			elmToAdd.innerHTML = "<span class='title' >" + removed[0].innerHTML + "</span>" +':'+ removed[j].innerHTML + "<br/>";
 			this.tableRows[i+1].children[0].appendChild(elmToAdd);
 			this.tableRows[i+1].children[0].colSpan = this.CountColumns();
