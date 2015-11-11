@@ -61,8 +61,10 @@ ResponsiveTable.prototype.AddPlus = function () {
 					if(!instance.IsGeneratedRow(j) && e.currentTarget == instance.tableRows[j].children[0].children[0]) {
 						if(instance.tableRows[j+1].style.display == 'none') {
 							instance.tableRows[j+1].style.display = 'table-row';
+							e.currentTarget.setAttribute("class", "fa fa-minus expand-plus");
 						}else {
 							instance.tableRows[j+1].style.display = 'none';
+							e.currentTarget.setAttribute("class", "fa fa-plus expand-plus");
 						}
 					}
 				}			
