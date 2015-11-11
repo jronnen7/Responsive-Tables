@@ -21,8 +21,7 @@ function ResponsiveTable(table) {
 		function() { 
 			calls++;
 			if(calls == 1) {
-				setTimeout(function () { instance.Respond() },350);
-				calls = 0;
+				setTimeout(function () { instance.Respond(); calls = 0; },350);
 			} 
 	});
 
@@ -43,9 +42,51 @@ ResponsiveTable.prototype.Respond = function () {
 		} else if (this.ShouldExpand()) {
 			this.AddMostImportantColumn();
 		} else { 
+			this.AddRemovePlus();
 			break; 
 		}
 	}
+}
+
+ResponsiveTable.prototype.AddPlus = function () {
+	var instance = this;
+	for(var i=1;i<this.tableRows.length;i++) {
+		if(!this.IsGeneratedRow(i)) {
+			var icon = document.createElement("i");	
+			icon.className = "fa fa-plus expand-plus";
+			icon.style.float = 'left';
+			icon.style.cursor = 'pointer';
+			icon.addEventListener('click', function(e) {
+				for(var j=0;j<instance.tableRows.length;j++) {
+					if(!instance.IsGeneratedRow(j) && e.currentTarget == instance.tableRows[j].children[0].children[0]) {
+						if(instance.tableRows[j+1].style.display == 'none') {
+							instance.tableRows[j+1].style.display = 'table-row';
+						}else {
+							instance.tableRows[j+1].style.display = 'none';
+						}
+					}
+				}			
+			});
+			this.tableRows[i].children[0].insertBefore(icon, this.tableRows[i].children[0].children[0]);
+		}
+	}
+}
+
+ResponsiveTable.prototype.IsPlusPresent = function (i) {
+	if(i === undefined) {
+		return this.tableRows[1].children[0].children[0].className.indexOf("expand-plus") > -1;
+	}else {
+		return this.tableRows[i].children[0].children[0].className.indexOf("expand-plus") > -1;
+	}
+}
+
+ResponsiveTable.prototype.AddRemovePlus = function () {
+	if(this.AreGeneratedRowsPresent() && !this.IsPlusPresent()) {
+		this.AddPlus();		
+			
+	} //else if(this.IsPlusPresent()) {
+//		this.RemovePlus();			
+//	}
 }
 
 ResponsiveTable.prototype.AreGeneratedRowsPresent = function () {
@@ -93,7 +134,7 @@ ResponsiveTable.prototype.RemovePTagAndGenerateRow = function (i) {
 	var ret;
 	var pTag = this.tableRows[i].children[0].removeChild(this.tableRows[i].children[0].lastChild);
 	ret = document.createElement('td');
-	ret.innerHTML = pTag.children[1].innerHTML;
+	ret.innerHTML = pTag.children[2].innerHTML;
 	return ret;
 	
 }
@@ -204,7 +245,7 @@ ResponsiveTable.prototype.InsertBelow = function (removed) {
 			elmToAdd.setAttribute("data-priority", this.currentPriority);
 			elmToAdd.setAttribute("data-position", this.currentPosistion);
 			elmToAdd.setAttribute("data-width", this.currentWidth);
-			elmToAdd.innerHTML = "<span class='title' >" + removed[0].innerHTML + "</span>" +':'+ "<span class='desc' >" + removed[j].innerHTML  + "</span>" + "<br/>";
+			elmToAdd.innerHTML = "<span class='title' >" + removed[0].innerHTML + "</span>" +'<span class="seperator">:</span>'+ "<span class='desc' >" + removed[j].innerHTML  + "</span>" + "<br/>";
 			this.tableRows[i+1].children[0].appendChild(elmToAdd);
 			this.tableRows[i+1].children[0].colSpan = this.CountColumns();
 			j++;

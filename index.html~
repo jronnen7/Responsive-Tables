@@ -3,8 +3,17 @@
 <head>
 <title>Responsive Tables</title>
 <script src="responsive-tables.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+<style>
+	table .generatedRow .title, table .generatedRow .desc {
+		float:left;
+		margin-left:15px;
+	}
+</style>
 </head>
 <body>
+
 
 <table id="t01">
 <tbody>
@@ -14,20 +23,32 @@
     <th data-priority="2">Points</th>
     <th data-priority="4">Firstname</th>
     <th data-priority="6">Lastname</th> 
+    <th data-priority="10">Points</th>
+    <th data-priority="10">Firstname</th>
+    <th data-priority="5">Lastname</th> 
+    <th data-priority="4">Points</th>
   </tr>
   <tr>
-    <td>Eve</td>
-    <td>Jackson</td> 
-    <td>94</td>
-    <td>Eve</td>
-    <td>Jackson</td> 
+    <td><div>Eve</div></td>
+    <td><div>Jackson</div></td> 
+    <td><div>94</div></td>
+    <td><div>Eve</div></td>
+    <td><div>Jackson</div></td> 
+    <td><div>94</div></td>
+    <td><div>Eve</div></td>
+    <td><div>Jackson</div></td> 
+    <td><div>94</div></td>
   </tr>
   <tr>
-    <td>John</td>
-    <td>Doe</td> 
-    <td>94</td>
-    <td>John</td>
-    <td>Doe</td> 
+    <td><div>John</div></td>
+    <td><div>Doe</div></td> 
+    <td><div>94</div></td>
+    <td><div>John</div></td>
+    <td><div>Doe</div></td> 
+    <td><div>94</div></td>
+    <td><div>John</div></td>
+    <td><div>Doe</div></td> 
+    <td><div>94</div></td>
   </tr>
 </tbody>
 </table>
