@@ -16,10 +16,18 @@ function ResponsiveTable(table) {
 	this.tableHead = this.tableRows[0];
 	
 	var instance = this;
-	
-	window.addEventListener("resize", function() { 
-		setTimeout(function () { instance.Respond() },200);});
-	
+	var calls = 0;
+	window.addEventListener("resize", 
+		function() { 
+			calls++;
+			if(calls == 1) {
+				setTimeout(function () { instance.Respond() },500);
+				calls = 0;
+			} 
+	});
+
+
+
 	this.Respond(); //initialize
 
 }
