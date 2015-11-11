@@ -11,7 +11,7 @@ function ResponsiveTables() {
 function ResponsiveTable(table) {
 
 	this.table = table;
-	
+	this.margin=10;
 	this.UpdateRows();
 	this.tableHead = this.tableRows[0];
 	
@@ -105,7 +105,7 @@ ResponsiveTable.prototype.WidthOfNextColumn = function () {
 }
 
 ResponsiveTable.prototype.ShouldShrink = function () {
-	return window.innerWidth < this.table.clientWidth;
+	return window.innerWidth - this.margin < this.table.clientWidth;
 }
 
 ResponsiveTable.prototype.ShouldExpand = function () {
@@ -212,7 +212,7 @@ ResponsiveTable.prototype.AddToDisplay = function (columns) {
 	for(var i=0;i<this.tableRows.length;i++) {
 		if(!this.IsGeneratedRow(i)) {
 			if(this.tableRows[i].children.length == this.currentPosistion) {
-				this.tableRows[i].append(columns[j]);
+				this.tableRows[i].appendChild(columns[j]);
 				//this.table.children[0].append(genTr);	
 			} else {
 				this.tableRows[i].insertBefore(columns[j], this.tableRows[i].children[this.currentPosistion]);

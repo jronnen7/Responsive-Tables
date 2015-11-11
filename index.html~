@@ -10,6 +10,9 @@
 		float:left;
 		margin-left:15px;
 	}
+	table .generatedRow .seperator {
+		float:left;
+	}
 </style>
 </head>
 <body>
@@ -18,37 +21,103 @@
 <table id="t01">
 <tbody>
   <tr>
-    <th data-priority="10">Firstname</th>
-    <th data-priority="7">Lastname</th> 
+    <th data-priority="1">Firstname</th>
+    <th data-priority="1">Lastname</th> 
     <th data-priority="2">Points</th>
-    <th data-priority="4">Firstname</th>
-    <th data-priority="6">Lastname</th> 
-    <th data-priority="10">Points</th>
-    <th data-priority="10">Firstname</th>
-    <th data-priority="5">Lastname</th> 
-    <th data-priority="4">Points</th>
+    <th data-priority="4">Fouls</th>
+    <th data-priority="15">Free Throw%</th> 
+    <th data-priority="14">Feild Goal %</th>
+    <th data-priority="13">Games Played</th>
+    <th data-priority="12">Assists</th> 
+    <th data-priority="10">Min. Played</th>
   </tr>
   <tr>
     <td><div>Eve</div></td>
     <td><div>Jackson</div></td> 
     <td><div>94</div></td>
-    <td><div>Eve</div></td>
-    <td><div>Jackson</div></td> 
-    <td><div>94</div></td>
-    <td><div>Eve</div></td>
-    <td><div>Jackson</div></td> 
-    <td><div>94</div></td>
+    <td><div>10</div></td>
+    <td><div>65%</div></td> 
+    <td><div>76%</div></td>
+    <td><div>21</div></td>
+    <td><div>85</div></td> 
+    <td><div>200</div></td>
   </tr>
   <tr>
     <td><div>John</div></td>
     <td><div>Doe</div></td> 
+    <td><div>34</div></td>
+    <td><div>0</div></td>
+    <td><div>95%</div></td> 
+    <td><div>96%</div></td>
+    <td><div>21</div></td>
+    <td><div>5</div></td> 
+    <td><div>180</div></td>
+  </tr>
+  <tr>
+    <td><div>Fred</div></td>
+    <td><div>Flinstone</div></td> 
     <td><div>94</div></td>
-    <td><div>John</div></td>
+    <td><div>10</div></td>
+    <td><div>65%</div></td> 
+    <td><div>76%</div></td>
+    <td><div>21</div></td>
+    <td><div>85</div></td> 
+    <td><div>200</div></td>
+  </tr>
+  <tr>
+    <td><div>Dr</div></td>
+    <td><div>Pepper</div></td> 
+    <td><div>34</div></td>
+    <td><div>0</div></td>
+    <td><div>95%</div></td> 
+    <td><div>96%</div></td>
+    <td><div>21</div></td>
+    <td><div>5</div></td> 
+    <td><div>180</div></td>
+  </tr>
+  <tr>
+    <td><div>Meta</div></td>
+    <td><div>Word Peace</div></td> 
+    <td><div>94</div></td>
+    <td><div>10</div></td>
+    <td><div>65%</div></td> 
+    <td><div>76%</div></td>
+    <td><div>21</div></td>
+    <td><div>85</div></td> 
+    <td><div>200</div></td>
+  </tr>
+  <tr>
+    <td><div>Kevin</div></td>
+    <td><div>Garnette</div></td> 
+    <td><div>34</div></td>
+    <td><div>0</div></td>
+    <td><div>95%</div></td> 
+    <td><div>96%</div></td>
+    <td><div>21</div></td>
+    <td><div>5</div></td> 
+    <td><div>180</div></td>
+  </tr>
+  <tr>
+    <td><div>Jane</div></td>
     <td><div>Doe</div></td> 
     <td><div>94</div></td>
-    <td><div>John</div></td>
-    <td><div>Doe</div></td> 
-    <td><div>94</div></td>
+    <td><div>10</div></td>
+    <td><div>65%</div></td> 
+    <td><div>76%</div></td>
+    <td><div>21</div></td>
+    <td><div>85</div></td> 
+    <td><div>200</div></td>
+  </tr>
+  <tr>
+    <td><div>Ricky</div></td>
+    <td><div>Rubio</div></td> 
+    <td><div>34</div></td>
+    <td><div>0</div></td>
+    <td><div>95%</div></td> 
+    <td><div>96%</div></td>
+    <td><div>21</div></td>
+    <td><div>5</div></td> 
+    <td><div>180</div></td>
   </tr>
 </tbody>
 </table>
