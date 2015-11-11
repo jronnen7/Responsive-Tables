@@ -134,7 +134,7 @@ ResponsiveTable.prototype.RemovePTagAndGenerateRow = function (i) {
 	var ret;
 	var pTag = this.tableRows[i].children[0].removeChild(this.tableRows[i].children[0].lastChild);
 	ret = document.createElement('td');
-	ret.innerHTML = pTag.children[1].innerHTML;
+	ret.innerHTML = pTag.children[2].innerHTML;
 	return ret;
 	
 }
