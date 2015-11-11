@@ -4,7 +4,7 @@ function ResponsiveTables() {
 
 	var tables = document.getElementsByTagName("table");
 	for(var i=0;i<tables.length;i++){
-		new ResponsiveTable(tables[i]).Respond();
+		new ResponsiveTable(tables[i]);
 	}
 }
 
@@ -12,23 +12,20 @@ function ResponsiveTable(table) {
 
 	this.table = table;
 	
-	this.tableRows = table.getElementsByTagName("tr");
+	this.UpdateRows();
 	this.tableHead = this.tableRows[0];
-	this.InitTableRows();
 	
 	var instance = this;
 	
-	window.addEventListener("resize", function() { instance.Respond() });
+	window.addEventListener("resize", function() { 
+		setTimeout(function () { instance.Respond() },500);});
+	
+	this.Respond(); //initialize
 
 }
 
-ResponsiveTable.prototype.InitTableRows = function () {
-	/* every table row and table row column needs to remember its position */
-	for(var i=0; i<this.tableRows.length;i++) {
-		for(var j=0; j<this.tableRows[i].children.length;j++) {
-			this.tableRows[i].children[j].tablePos= j
-		}
-	}
+ResponsiveTable.prototype.UpdateRows = function () {
+	this.tableRows = this.table.getElementsByTagName("tr");
 }
 
 ResponsiveTable.prototype.Respond = function () {
@@ -36,20 +33,37 @@ ResponsiveTable.prototype.Respond = function () {
 		if(this.ShouldShrink()) {
 			this.RemoveLeastImportantColumn();
 		} else if (this.ShouldExpand()) {
-			this.AddMostImportantColumn(i);
+			this.AddMostImportantColumn();
 		} else { 
 			break; 
 		}
 	}
 }
 
-ResponsiveTable.prototype.ShouldShrink = function () {
+ResponsiveTable.prototype.AreGeneratedRowsPresent = function () {
+	return this.table.getElementsByClassName('generatedRow').length > 0;
+}
 
+ResponsiveTable.prototype.WidthOfNextColumn = function () {
+	var ret=0; var genRows = this.table.getElementsByClassName('generatedRow');
+	if(genRows.length > 0) {
+		ret = genRows[0].children[0].lastChild.getAttribute("data-width");
+	}
+	return Number(ret);
+	
+}
+
+ResponsiveTable.prototype.ShouldShrink = function () {
 	return window.innerWidth < this.table.clientWidth;
 }
 
 ResponsiveTable.prototype.ShouldExpand = function () {
-	return window.innerWidth > this.table.clientWidth;
+	var ret=false;	
+	if(this.AreGeneratedRowsPresent()){
+		if(window.innerWidth > (this.table.clientWidth + this.WidthOfNextColumn())) {
+			ret = true;
+		}
+	} return ret;
 }
 
 
@@ -67,12 +81,54 @@ ResponsiveTable.prototype.RemoveLeastImportantColumn = function () {
 	}
 }
 
-ResponsiveTable.prototype.AddMostImportantColumn = function () {
+ResponsiveTable.prototype.RemovePTagAndGenerateRow = function (i) {
+	var ret;
+	var pTag = this.tableRows[i].children[0].removeChild(this.tableRows[i].children[0].lastChild);
+	ret = document.createElement('td');
+	ret.innerHTML = pTag.children[1].innerHTML;
+	return ret;
+	
+}
+ResponsiveTable.prototype.GenerateHeadColumn = function (i) {
+	var ret;
+	var pTag = this.table.getElementsByClassName('generatedRow')[0].children[0].lastChild;
+	ret = document.createElement('th');
+	ret.innerHTML = pTag.children[0].innerHTML;
+	ret.setAttribute("data-priority", pTag.getAttribute("data-priority"));	
+	this.currentPosistion = Number(pTag.getAttribute("data-position"));
+	return ret;
+	
+}
+ResponsiveTable.prototype.GetColumnsToAdd = function () {
+	var ret = new Array(); var j=1;
+	ret[0] = this.GenerateHeadColumn();
+	for(var i=1;i<this.tableRows.length;i++){
+		if(this.IsGeneratedRow(i)) {
+			ret[j]=this.RemovePTagAndGenerateRow(i);
+			j++;
+		}	
+	} return ret;
+}
 
+ResponsiveTable.prototype.AddMostImportantColumn = function () {
+	var columns = this.GetColumnsToAdd();
+	if(columns.length > 0) {
+		this.AddToDisplay(columns);
+	} this.TryCleaningUpGeneratedDivs();
 }
 
 ResponsiveTable.prototype.IsGeneratedRow = function (i) {
 	return this.tableRows[i].className.indexOf('generatedRow') > -1;
+}
+
+ResponsiveTable.prototype.TryCleaningUpGeneratedDivs = function () {
+	var genRows = this.table.getElementsByClassName('generatedRow');
+	var length = genRows.length;
+	if(genRows.length > 0 && genRows[0].children[0].children.length == 0) {
+		for(var i=0;i<length;i++){
+			this.table.children[0].removeChild(genRows[0]);
+		} this.UpdateRows();	
+	}
 }
 
 ResponsiveTable.prototype.IsGeneratedRowNext = function (i) {
@@ -100,9 +156,26 @@ ResponsiveTable.prototype.GetLeastImportantColumn = function () {
 	} return leastImpt;
 }
 
+ResponsiveTable.prototype.AddToDisplay = function (columns) {
+	var j=0;
+	for(var i=0;i<this.tableRows.length;i++) {
+		if(!this.IsGeneratedRow(i)) {
+			if(this.tableRows[i].children.length == this.currentPosistion) {
+				this.tableRows[i].append(columns[j]);
+				//this.table.children[0].append(genTr);	
+			} else {
+				this.tableRows[i].insertBefore(columns[j], this.tableRows[i].children[this.currentPosistion]);
+				//this.table.children[0].insertBefore(genTr, this.tableRows[i+1]);
+			} j++;	
+		}
+	}
+}
+
 ResponsiveTable.prototype.RemoveFromDisplay = function (columnNumber) {
 	this.columnHeader = this.tableRows[0].children[columnNumber].innerHTML;
 	this.currentPriority = this.tableRows[0].children[columnNumber].getAttribute("data-priority");
+	this.currentWidth = this.tableRows[0].children[columnNumber].clientWidth;
+
 	var ret = new Array(); var j=0;
 	for(var i=0;i<this.tableRows.length;i++) {
 		if(!this.IsGeneratedRow(i)) {
@@ -122,7 +195,8 @@ ResponsiveTable.prototype.InsertBelow = function (removed) {
 			var elmToAdd = document.createElement('p');
 			elmToAdd.setAttribute("data-priority", this.currentPriority);
 			elmToAdd.setAttribute("data-position", this.currentPosistion);
-			elmToAdd.innerHTML = "<span class='title' >" + removed[0].innerHTML + "</span>" +':'+ removed[j].innerHTML + "<br/>";
+			elmToAdd.setAttribute("data-width", this.currentWidth);
+			elmToAdd.innerHTML = "<span class='title' >" + removed[0].innerHTML + "</span>" +':'+ "<span class='desc' >" + removed[j].innerHTML  + "</span>" + "<br/>";
 			this.tableRows[i+1].children[0].appendChild(elmToAdd);
 			this.tableRows[i+1].children[0].colSpan = this.CountColumns();
 			j++;
@@ -140,6 +214,7 @@ ResponsiveTable.prototype.GenerateRow = function (i) {
 	} else {
 		this.table.children[0].insertBefore(genTr, this.tableRows[i+1]);
 	}
+	this.UpdateRows();
 }
 
 

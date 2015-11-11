@@ -7,13 +7,13 @@
 <body>
 
 <table id="t01">
+<tbody>
   <tr>
     <th data-priority="10">Firstname</th>
     <th data-priority="7">Lastname</th> 
     <th data-priority="2">Points</th>
     <th data-priority="4">Firstname</th>
     <th data-priority="6">Lastname</th> 
-    <th data-priority="10">Points</th>
   </tr>
   <tr>
     <td>Eve</td>
@@ -21,7 +21,6 @@
     <td>94</td>
     <td>Eve</td>
     <td>Jackson</td> 
-    <td>94</td>
   </tr>
   <tr>
     <td>John</td>
@@ -29,11 +28,11 @@
     <td>94</td>
     <td>John</td>
     <td>Doe</td> 
-    <td>94</td>
   </tr>
+</tbody>
 </table>
+</body>
 <script>
 	new ResponsiveTables();
 </script>
-</body>
 </html>
