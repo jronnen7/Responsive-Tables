@@ -21,14 +21,14 @@
 <table id="t01">
 <tbody>
   <tr>
-    <th data-priority="1">Firstname</th>
+    <th data-priority="15">Firstname</th>
     <th data-priority="1">Lastname</th> 
     <th data-priority="2">Points</th>
     <th data-priority="4">Fouls</th>
-    <th data-priority="15">Free Throw%</th> 
-    <th data-priority="14">Feild Goal %</th>
-    <th data-priority="13">Games Played</th>
-    <th data-priority="12">Assists</th> 
+    <th data-priority="6">Free Throw%</th> 
+    <th data-priority="7">Feild Goal %</th>
+    <th data-priority="20">Games Played</th>
+    <th data-priority="15">Assists</th> 
     <th data-priority="10">Min. Played</th>
   </tr>
   <tr>

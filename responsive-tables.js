@@ -1,10 +1,8 @@
-
-
 function ResponsiveTables() {
-
 	var tables = document.getElementsByTagName("table");
+	var responsiveTables = new Array();
 	for(var i=0;i<tables.length;i++){
-		new ResponsiveTable(tables[i]);
+		responsiveTables[i] = new ResponsiveTable(tables[i]);
 	}
 }
 
@@ -21,7 +19,7 @@ function ResponsiveTable(table) {
 		function() { 
 			calls++;
 			if(calls == 1) {
-				setTimeout(function () { instance.Respond(); calls = 0; },350);
+				setTimeout(function () { instance.Respond(); console.log(calls); calls = 0; },400);
 			} 
 	});
 
@@ -53,7 +51,11 @@ ResponsiveTable.prototype.AddPlus = function () {
 	for(var i=1;i<this.tableRows.length;i++) {
 		if(!this.IsGeneratedRow(i)) {
 			var icon = document.createElement("i");	
-			icon.className = "fa fa-plus expand-plus";
+			if(this.tableRows[i+1].style.display == 'none') {
+				icon.className = "fa fa-plus expand-plus";
+			} else {
+				icon.className = "fa fa-minus expand-plus";
+			}
 			icon.style.float = 'left';
 			icon.style.cursor = 'pointer';
 			icon.addEventListener('click', function(e) {
@@ -74,11 +76,19 @@ ResponsiveTable.prototype.AddPlus = function () {
 	}
 }
 
-ResponsiveTable.prototype.IsPlusPresent = function (i) {
-	if(i === undefined) {
-		return this.tableRows[1].children[0].children[0].className.indexOf("expand-plus") > -1;
-	}else {
-		return this.tableRows[i].children[0].children[0].className.indexOf("expand-plus") > -1;
+ResponsiveTable.prototype.IsPlusPresent = function () {
+	return this.tableRows[1].children[0].children[0].className.indexOf("expand-plus") > -1;
+}
+
+ResponsiveTable.prototype.RemoveAllPlus = function () {
+	var plusIcons = this.table.getElementsByClassName('expand-plus');
+	while(plusIcons[0] !== undefined) {
+		plusIcons[0].parentNode.removeChild(plusIcons[0]);	
+	}
+}
+ResponsiveTable.prototype.RemovePlus = function () {
+	if(!this.AreGeneratedRowsPresent()) {
+		this.RemoveAllPlus();
 	}
 }
 
@@ -86,11 +96,8 @@ ResponsiveTable.prototype.AddRemovePlus = function () {
 	if(this.AreGeneratedRowsPresent() && !this.IsPlusPresent()) {
 		this.AddPlus();		
 			
-	} //else if(this.IsPlusPresent()) {
-//		this.RemovePlus();			
-//	}
+	} this.RemovePlus();
 }
-
 ResponsiveTable.prototype.AreGeneratedRowsPresent = function () {
 	return this.table.getElementsByClassName('generatedRow').length > 0;
 }
@@ -207,8 +214,19 @@ ResponsiveTable.prototype.GetLeastImportantColumn = function () {
 	} return leastImpt;
 }
 
+ResponsiveTable.prototype.RemoveOldPlus = function () {
+	for(var i=1;i<this.tableRows.length;i++) {
+		if(!this.IsGeneratedRow(i)) {
+			this.tableRows[i].children[0].removeChild(this.tableRows[i].children[0].children[0]);
+		}
+	}
+}
+
 ResponsiveTable.prototype.AddToDisplay = function (columns) {
 	var j=0;
+	if(this.currentPosistion == 0) {
+		this.RemoveOldPlus();
+	}
 	for(var i=0;i<this.tableRows.length;i++) {
 		if(!this.IsGeneratedRow(i)) {
 			if(this.tableRows[i].children.length == this.currentPosistion) {
@@ -231,6 +249,7 @@ ResponsiveTable.prototype.RemoveFromDisplay = function (columnNumber) {
 	for(var i=0;i<this.tableRows.length;i++) {
 		if(!this.IsGeneratedRow(i)) {
 			ret[j] = this.tableRows[i].removeChild(this.tableRows[i].children[columnNumber]);
+
 			j++;
 		}
 	} return ret;
@@ -242,6 +261,9 @@ ResponsiveTable.prototype.InsertBelow = function (removed) {
 		if(!this.IsGeneratedRow(i)) {
 			if(!this.IsGeneratedRowNext(i)) {
 				this.GenerateRow(i);	
+			}
+			if(removed[j].children[0].className.indexOf('expand-plus') > -1) {
+				removed[j].removeChild(removed[j].children[0]);				
 			}
 			var elmToAdd = document.createElement('p');
 			elmToAdd.setAttribute("data-priority", this.currentPriority);
