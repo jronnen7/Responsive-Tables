@@ -9,7 +9,7 @@ function ResponsiveTables() {
 function ResponsiveTable(table) {
 
 	this.table = table;
-	this.margin=10;
+	this.margin=4;
 	this.UpdateRows();
 	this.tableHead = this.tableRows[0];
 	

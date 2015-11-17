@@ -9,7 +9,7 @@ function ResponsiveTables() {
 function ResponsiveTable(table) {
 
 	this.table = table;
-	this.margin=10;
+	this.margin=1;
 	this.UpdateRows();
 	this.tableHead = this.tableRows[0];
 	
@@ -19,7 +19,7 @@ function ResponsiveTable(table) {
 		function() { 
 			calls++;
 			if(calls == 1) {
-				setTimeout(function () { instance.Respond(); console.log(calls); calls = 0; },350);
+				setTimeout(function () { instance.Respond(); console.log(calls); calls = 0; },400);
 			} 
 	});
 
@@ -112,7 +112,7 @@ ResponsiveTable.prototype.WidthOfNextColumn = function () {
 }
 
 ResponsiveTable.prototype.ShouldShrink = function () {
-	return window.innerWidth - this.margin < this.table.clientWidth;
+	return this.table.parentNode.clientWidth - this.margin < this.table.clientWidth;
 }
 
 ResponsiveTable.prototype.ShouldExpand = function () {
